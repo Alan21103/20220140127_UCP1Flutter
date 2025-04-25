@@ -47,12 +47,12 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: "Email",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide.none
+                        borderSide: BorderSide.none,
                       ),
                       fillColor: Colors.purple.withOpacity(0.1),
                       filled: true,
-                      prefixIcon: const Icon(Icons.person)
-                      ),
+                      prefixIcon: const Icon(Icons.person),
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
@@ -62,18 +62,45 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-              TextFormField(
-                controller: passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
+              SizedBox(height: 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Password:',
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  TextFormField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      hintText: "Password",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(18),
+                        borderSide: BorderSide.none,
+                      ),
+                      fillColor: Colors.purple.withOpacity(0.1),
+                      filled: true,
+                      prefixIcon: const Icon(Icons.person),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
               ),
+              SizedBox(height: 15),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 92, 7, 111),
+                  padding: EdgeInsets.symmetric (vertical: 18),
+                ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     Navigator.pushReplacement(
@@ -82,7 +109,14 @@ class _LoginPageState extends State<LoginPage> {
                     );
                   }
                 },
-                child: Text('Login'),
+                child: Text(
+                  'Login',
+                  style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
               TextButton(
                 onPressed: () {

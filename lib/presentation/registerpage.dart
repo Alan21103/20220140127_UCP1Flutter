@@ -142,7 +142,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Nama Lengkap',
+                    'Password',
                     style: GoogleFonts.poppins(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
@@ -152,7 +152,41 @@ class _RegisterPageState extends State<RegisterPage> {
                   TextFormField(
                     controller: emailController,
                     decoration: InputDecoration(
-                      hintText: "Nama Lengkap",
+                      hintText: "Password",
+                      hintStyle: GoogleFonts.poppins(fontSize: 12),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(18),
+                        borderSide: BorderSide.none,
+                      ),
+                      fillColor: Colors.purple.withOpacity(0.1),
+                      filled: true,
+                      prefixIcon: const Icon(Icons.person),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your Nama Lengkap';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Password',
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  TextFormField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      hintText: "Password",
                       hintStyle: GoogleFonts.poppins(fontSize: 12),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18),

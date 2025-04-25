@@ -43,7 +43,16 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   TextFormField(
                     controller: emailController,
-                    decoration: const InputDecoration(labelText: 'Email'),
+                    decoration: InputDecoration(
+                      hintText: "Email",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(18),
+                        borderSide: BorderSide.none
+                      ),
+                      fillColor: Colors.purple.withOpacity(0.1),
+                      filled: true,
+                      prefixIcon: const Icon(Icons.person)
+                      ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';

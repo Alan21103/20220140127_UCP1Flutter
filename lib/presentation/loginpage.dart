@@ -125,7 +125,12 @@ class _LoginPageState extends State<LoginPage> {
                     MaterialPageRoute(builder: (context) => RegisterPage()),
                   );
                 },
-                child: Text('Belum punya akun? Daftar'),
+                child: Text('Belum punya akun? Daftar disini',
+                style: GoogleFonts.poppins(
+                    fontSize: 12,
+                    color: Colors.blueAccent,
+                    fontWeight: FontWeight.bold,
+                  ),),
               ),
             ],
           ),

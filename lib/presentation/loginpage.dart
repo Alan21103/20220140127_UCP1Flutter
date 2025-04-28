@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ucp_1/presentation/homepage.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ucp_1/presentation/homepage.dart'; 
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,17 +11,40 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _saveEmail(String email) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userEmail', email);
+  }
+
+  void _login() async {
+    if (_formKey.currentState!.validate()) {
+      String email = _emailController.text.trim();
+      String password = _passwordController.text;
+
+      if (email.isNotEmpty && password.isNotEmpty) {
+        await _saveEmail(email);
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
+    }
+  }
 
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
     return Scaffold(
       backgroundColor: Colors.white,
       body: Form(
@@ -32,15 +55,11 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                
-                SizedBox(height: 120),
-                Image.asset(
-                  './assets/img/Contoh-Logo-Purple.jpg', 
-                  height: 200,
-                ),
-                SizedBox(height: 30),
+                const SizedBox(height: 120),
+                Image.asset('./assets/img/Contoh-Logo-Purple.jpg', height: 200),
+                const SizedBox(height: 30),
 
-                // Form Email
+                // Email Field
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -52,8 +71,9 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.black,
                       ),
                     ),
+                    const SizedBox(height: 8),
                     TextFormField(
-                      controller: emailController,
+                      controller: _emailController,
                       decoration: InputDecoration(
                         hintText: "Email",
                         border: OutlineInputBorder(
@@ -74,9 +94,9 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
 
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-                // Form Password
+                // Password Field
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -88,9 +108,9 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.black,
                       ),
                     ),
+                    const SizedBox(height: 8),
                     TextFormField(
-                      controller:
-                          passwordController, 
+                      controller: _passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
                         hintText: "Password",
@@ -112,29 +132,20 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
 
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
 
-                
+                // Login Button
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 92, 7, 111),
-                      padding: EdgeInsets.symmetric(vertical: 20),
+                      padding: const EdgeInsets.symmetric(vertical: 20),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18),
                       ),
                     ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
-                          ),
-                        );
-                      }
-                    },
+                    onPressed: _login,
                     child: Text(
                       'Login',
                       style: GoogleFonts.poppins(
@@ -146,9 +157,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
 
-                // Tombol Daftar
+                // Register link
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

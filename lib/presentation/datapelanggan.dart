@@ -95,7 +95,11 @@ class _DataPelangganPageState extends State<DataPelangganPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               buildLabel('Nama Cust'),
-              buildTextField(controller: namaController, hint: 'Nama Cust', validator: validateNama),
+              buildTextField(
+                controller: namaController,
+                hint: 'Nama Cust',
+                validator: validateNama,
+              ),
 
               const SizedBox(height: 16),
 
@@ -106,7 +110,11 @@ class _DataPelangganPageState extends State<DataPelangganPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         buildLabel('Email'),
-                        buildTextField(controller: emailController, hint: 'Email', validator: validateEmail),
+                        buildTextField(
+                          controller: emailController,
+                          hint: 'Email',
+                          validator: validateEmail,
+                        ),
                       ],
                     ),
                   ),
@@ -116,7 +124,11 @@ class _DataPelangganPageState extends State<DataPelangganPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         buildLabel('No Hp'),
-                        buildTextField(controller: noHpController, hint: 'No Hp', validator: validateNoHp),
+                        buildTextField(
+                          controller: noHpController,
+                          hint: 'No Hp',
+                          validator: validateNoHp,
+                        ),
                       ],
                     ),
                   ),
@@ -126,7 +138,11 @@ class _DataPelangganPageState extends State<DataPelangganPage> {
               const SizedBox(height: 16),
 
               buildLabel('Alamat'),
-              buildTextField(controller: alamatController, hint: 'Alamat', validator: validateAlamat),
+              buildTextField(
+                controller: alamatController,
+                hint: 'Alamat',
+                validator: validateAlamat,
+              ),
 
               const SizedBox(height: 16),
 
@@ -137,7 +153,11 @@ class _DataPelangganPageState extends State<DataPelangganPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         buildLabel('Provinsi'),
-                        buildTextField(controller: provinsiController, hint: 'Provinsi', validator: validateProvinsi),
+                        buildTextField(
+                          controller: provinsiController,
+                          hint: 'Provinsi',
+                          validator: validateProvinsi,
+                        ),
                       ],
                     ),
                   ),
@@ -147,7 +167,11 @@ class _DataPelangganPageState extends State<DataPelangganPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         buildLabel('Kode Pos'),
-                        buildTextField(controller: kodePosController, hint: 'Kode Pos', validator: validateKodePos),
+                        buildTextField(
+                          controller: kodePosController,
+                          hint: 'Kode Pos',
+                          validator: validateKodePos,
+                        ),
                       ],
                     ),
                   ),
@@ -165,7 +189,7 @@ class _DataPelangganPageState extends State<DataPelangganPage> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:const Color.fromARGB(255, 134, 11, 156),
+                  backgroundColor: const Color.fromARGB(255, 134, 11, 156),
                   minimumSize: const Size.fromHeight(50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(24),
@@ -186,15 +210,27 @@ class _DataPelangganPageState extends State<DataPelangganPage> {
 
               OutlinedButton(
                 onPressed: () {
-                  namaController.clear();
-                  emailController.clear();
-                  noHpController.clear();
-                  alamatController.clear();
-                  provinsiController.clear();
-                  kodePosController.clear();
+                  if (_formKey.currentState!.validate()) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => DetailPelangganPage(
+                              nama: namaController.text,
+                              email: emailController.text,
+                              noHp: noHpController.text,
+                              alamat: alamatController.text,
+                              provinsi: provinsiController.text,
+                              kodePos: kodePosController.text,
+                            ),
+                      ),
+                    );
+                  }
                 },
                 style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Color.fromARGB(255, 148, 17, 171)),
+                  side: const BorderSide(
+                    color: Color.fromARGB(255, 148, 17, 171),
+                  ),
                   minimumSize: const Size.fromHeight(50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(24),
@@ -230,17 +266,22 @@ class _DataPelangganPageState extends State<DataPelangganPage> {
     );
   }
 
-  Widget buildTextField({required TextEditingController controller, required String hint, required String? Function(String?) validator}) {
+  Widget buildTextField({
+    required TextEditingController controller,
+    required String hint,
+    required String? Function(String?) validator,
+  }) {
     return TextFormField(
       controller: controller,
       validator: validator,
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: GoogleFonts.poppins(color: Colors.black45),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(24),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 16,
         ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(24)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(24),
           borderSide: const BorderSide(color: Colors.black26),

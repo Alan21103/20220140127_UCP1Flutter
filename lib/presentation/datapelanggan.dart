@@ -77,7 +77,7 @@ class _DataPelangganPageState extends State<DataPelangganPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFFFF7F4),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFFF4516),
+        backgroundColor: const Color.fromARGB(255, 134, 11, 156),
         title: Text(
           'Data Pelanggan',
           style: GoogleFonts.poppins(
@@ -165,7 +165,7 @@ class _DataPelangganPageState extends State<DataPelangganPage> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFF4516),
+                  backgroundColor:const Color.fromARGB(255, 134, 11, 156),
                   minimumSize: const Size.fromHeight(50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(24),
@@ -194,7 +194,7 @@ class _DataPelangganPageState extends State<DataPelangganPage> {
                   kodePosController.clear();
                 },
                 style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Color(0xFFFF4516)),
+                  side: const BorderSide(color: Color.fromARGB(255, 148, 17, 171)),
                   minimumSize: const Size.fromHeight(50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(24),
@@ -204,7 +204,7 @@ class _DataPelangganPageState extends State<DataPelangganPage> {
                   'Reset',
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xFFFF4516),
+                    color: const Color.fromARGB(255, 134, 11, 156),
                     fontSize: 16,
                   ),
                 ),

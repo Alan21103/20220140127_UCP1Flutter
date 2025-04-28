@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ucp_1/presentation/homepage.dart';
-import 'package:ucp_1/presentation/registerpage.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
+                          return 'Email tidak boleh kosong';
                         }
                         return null;
                       },
@@ -104,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
+                          return 'Password tidak boleh kosong';
                         }
                         return null;
                       },
@@ -149,21 +149,30 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 15),
 
                 // Tombol Daftar
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RegisterPage()),
-                    );
-                  },
-                  child: Text(
-                    'Belum punya akun? Daftar disini',
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      color: Colors.blueAccent,
-                      fontWeight: FontWeight.bold,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Belum memiliki akun? ',
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/register');
+                      },
+                      child: Text(
+                        'Daftar disini!',
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          color: Colors.blueAccent,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ucp_1/presentation/datapelanggan.dart';
 import 'datapiketpage.dart'; // Ini halaman DataPiket
 
 class HomePage extends StatefulWidget {
@@ -49,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(28),
                     child: Image.network(
-                       'https://storage.googleapis.com/a1aa/image/a156d4c1-ab9e-437b-847a-8846cf22d52a.jpg',
+                      'https://storage.googleapis.com/a1aa/image/a156d4c1-ab9e-437b-847a-8846cf22d52a.jpg',
                       height: 56,
                       fit: BoxFit.cover,
                     ),
@@ -112,8 +113,12 @@ class _HomePageState extends State<HomePage> {
               Expanded(
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const DataPiketPage()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DataPiketPage(),
+                      ),
+                    );
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -123,7 +128,11 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.symmetric(vertical: 40),
                     child: Column(
                       children: [
-                        const Icon(Icons.sync_alt, color: Colors.white, size: 32),
+                        const Icon(
+                          Icons.sync_alt,
+                          color: Colors.white,
+                          size: 32,
+                        ),
                         const SizedBox(height: 12),
                         Text(
                           'Data Piket',
@@ -141,7 +150,14 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(width: 16),
               Expanded(
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DataPelangganPage(),
+                      ),
+                    );
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 134, 11, 156),
@@ -150,7 +166,11 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.symmetric(vertical: 40),
                     child: Column(
                       children: [
-                        const Icon(Icons.grid_view, color: Colors.white, size: 32),
+                        const Icon(
+                          Icons.grid_view,
+                          color: Colors.white,
+                          size: 32,
+                        ),
                         const SizedBox(height: 12),
                         Text(
                           'Data Pelanggan',

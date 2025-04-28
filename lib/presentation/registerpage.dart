@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -153,9 +154,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                 _isLoading = false;
                               });
 
+                              // Simpan email ke SharedPreferences
+                              final prefs = await SharedPreferences.getInstance();
+                              await prefs.setString('userEmail', emailController.text.trim());
+
                               _showSnackBar(context, 'Registrasi Berhasil', Colors.green);
 
-                              Navigator.pushReplacementNamed(context, '/login'); // Ganti halaman ke Login
+                              // Arahkan ke HomePage
+                              Navigator.pushReplacementNamed(context, '/home');
                             }
                           },
                     style: ElevatedButton.styleFrom(

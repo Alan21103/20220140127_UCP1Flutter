@@ -9,30 +9,30 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController namaController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController noHpController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  final TextEditingController confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Background warna soft
+      backgroundColor: Colors.white,
       body: Form(
+        key: _formKey,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                const SizedBox(height: 70),
+                const SizedBox(height: 50),
                 // Logo
                 Center(
                   child: Image.asset(
                     './assets/img/Contoh-Logo-Purple.jpg',
-                    height: 200,
+                    height: 170,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -59,6 +59,13 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 5),
                 TextFormField(
+                  controller: namaController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Nama lengkap tidak boleh kosong';
+                    }
+                    return null;
+                  },
                   decoration: InputDecoration(
                     hintText: 'Nama Lengkap',
                     prefixIcon: const Icon(Icons.person),
@@ -86,6 +93,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           const SizedBox(height: 5),
                           TextFormField(
+                            controller: emailController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Email tidak boleh kosong';
+                              }
+                              return null;
+                            },
                             decoration: InputDecoration(
                               hintText: 'Email',
                               prefixIcon: const Icon(Icons.email),
@@ -113,6 +127,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           const SizedBox(height: 5),
                           TextFormField(
+                            controller: noHpController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Nomor HP tidak boleh kosong';
+                              }
+                              return null;
+                            },
                             decoration: InputDecoration(
                               hintText: 'No HP',
                               prefixIcon: const Icon(Icons.phone),
@@ -145,7 +166,14 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           const SizedBox(height: 5),
                           TextFormField(
+                            controller: passwordController,
                             obscureText: true,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Password tidak boleh kosong';
+                              }
+                              return null;
+                            },
                             decoration: InputDecoration(
                               hintText: 'Password',
                               prefixIcon: const Icon(Icons.lock),
@@ -174,7 +202,17 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           const SizedBox(height: 5),
                           TextFormField(
+                            controller: confirmPasswordController,
                             obscureText: true,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Konfirmasi password tidak boleh kosong';
+                              }
+                              if (value != passwordController.text) {
+                                return 'Password tidak sama';
+                              }
+                              return null;
+                            },
                             decoration: InputDecoration(
                               hintText: 'Konfirmasi Password',
                               prefixIcon: const Icon(Icons.lock),
@@ -196,7 +234,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // Jika semua validasi terpenuhi
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Registrasi Berhasil')),
+                        );
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 92, 7, 111),
                       padding: const EdgeInsets.symmetric(vertical: 18),
@@ -220,7 +265,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Belum memiliki akun? ',
+                      'Sudah memiliki akun? ',
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         color: Colors.black,

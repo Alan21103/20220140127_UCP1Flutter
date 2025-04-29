@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ucp_1/presentation/databarangpage.dart';
 import 'package:ucp_1/presentation/datapelanggan.dart';
 import 'datapiketpage.dart'; // Ini halaman DataPiket
 
@@ -189,7 +190,14 @@ class _HomePageState extends State<HomePage> {
           ),
           const SizedBox(height: 24),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PendataanBarangPage(),
+                ),
+              );
+            },
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(

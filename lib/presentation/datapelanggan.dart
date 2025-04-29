@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ucp_1/presentation/detailpelangganpage.dart';
 
 class DataPelangganPage extends StatefulWidget {
   const DataPelangganPage({super.key});
@@ -183,8 +184,20 @@ class _DataPelangganPageState extends State<DataPelangganPage> {
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Data berhasil disimpan')),
+                    // Setelah data valid, langsung pindah ke halaman detail
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => DetailPelangganPage(
+                              nama: namaController.text,
+                              email: emailController.text,
+                              noHp: noHpController.text,
+                              alamat: alamatController.text,
+                              provinsi: provinsiController.text,
+                              kodePos: kodePosController.text,
+                            ),
+                      ),
                     );
                   }
                 },
@@ -207,25 +220,14 @@ class _DataPelangganPageState extends State<DataPelangganPage> {
               ),
 
               const SizedBox(height: 16),
-
               OutlinedButton(
                 onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) => DetailPelangganPage(
-                              nama: namaController.text,
-                              email: emailController.text,
-                              noHp: noHpController.text,
-                              alamat: alamatController.text,
-                              provinsi: provinsiController.text,
-                              kodePos: kodePosController.text,
-                            ),
-                      ),
-                    );
-                  }
+                  namaController.clear();
+                  emailController.clear();
+                  noHpController.clear();
+                  alamatController.clear();
+                  provinsiController.clear();
+                  kodePosController.clear();
                 },
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(
@@ -288,7 +290,7 @@ class _DataPelangganPageState extends State<DataPelangganPage> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(24),
-          borderSide: const BorderSide(color: Color(0xFFFF4516)),
+          borderSide: const BorderSide(color: Color.fromRGBO(170, 17, 212, 1)),
         ),
       ),
     );

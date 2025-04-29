@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ucp_1/presentation/detaildatapiket.dart';
@@ -20,10 +21,16 @@ class _DataPiketPageState extends State<DataPiketPage> {
   String? _selectedAnggota;
   String? _dateError;
   List<String> _anggotaOptions = [];
+  bool _isLocaleInitialized = false;
 
   @override
   void initState() {
     super.initState();
+    initializeDateFormatting('id_ID', null).then((_) {
+      setState(() {
+        _isLocaleInitialized = true;
+      });
+    });
     _loadEmail();
   }
 
@@ -71,22 +78,41 @@ class _DataPiketPageState extends State<DataPiketPage> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    DateTime? pickedDate = await showDatePicker(
+    final DateTime? picked = await showModalBottomSheet<DateTime>(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
+      builder: (context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.7,
+          child: CalendarDatePicker(
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2101),
+            onDateChanged: (date) {
+              Navigator.pop(context, date);
+            },
+          ),
+        );
+      },
     );
 
-    if (pickedDate != null) {
+    if (picked != null) {
       setState(() {
-        _dateController.text = DateFormat('dd-MM-yyyy').format(pickedDate);
+        _dateController.text = DateFormat(
+          'EEEE, dd-MM-yyyy',
+          'id_ID',
+        ).format(picked);
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_isLocaleInitialized) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -106,7 +132,15 @@ class _DataPiketPageState extends State<DataPiketPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Nama Anggota Section
+            Text(
+              DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(DateTime.now()),
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 16),
             Text(
               'Nama Anggota',
               style: GoogleFonts.poppins(
@@ -117,13 +151,12 @@ class _DataPiketPageState extends State<DataPiketPage> {
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
               value: _selectedAnggota,
-              items:
-                  _anggotaOptions.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+              items: _anggotaOptions.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
               onChanged: (String? newValue) {
                 setState(() {
                   _selectedAnggota = newValue;
@@ -138,8 +171,6 @@ class _DataPiketPageState extends State<DataPiketPage> {
               ),
             ),
             const SizedBox(height: 16),
-
-            // Pilih Tanggal Section
             Text(
               'Pilih Tanggal',
               style: GoogleFonts.poppins(
@@ -164,10 +195,14 @@ class _DataPiketPageState extends State<DataPiketPage> {
                       fillColor: Colors.white,
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.calendar_today),
-                        onPressed: () => _selectDate(context),
+                        onPressed: () async {
+                          await _selectDate(context);
+                        },
                       ),
                     ),
-                    onTap: () => _selectDate(context),
+                    onTap: () async {
+                      await _selectDate(context);
+                    },
                   ),
                 ),
               ],
@@ -181,8 +216,6 @@ class _DataPiketPageState extends State<DataPiketPage> {
                 ),
               ),
             const SizedBox(height: 16),
-
-            // Tugas Piket Section
             Text(
               'Tugas Piket',
               style: GoogleFonts.poppins(
@@ -238,8 +271,6 @@ class _DataPiketPageState extends State<DataPiketPage> {
               ],
             ),
             const SizedBox(height: 24),
-
-            // Daftar Tugas Piket Section
             Text(
               'Daftar Tugas Piket',
               style: GoogleFonts.poppins(
@@ -249,73 +280,63 @@ class _DataPiketPageState extends State<DataPiketPage> {
             ),
             const SizedBox(height: 8),
             Expanded(
-              child:
-                  listTugas.isEmpty
-                      ? Center(
-                        child: Text(
-                          'Belum ada Data',
-                          style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            color: Colors.grey,
-                          ),
+              child: listTugas.isEmpty
+                  ? Center(
+                      child: Text(
+                        'Belum ada Data',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          color: Colors.grey,
                         ),
-                      )
-                      : ListView.builder(
-                        itemCount: listTugas.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            margin: const EdgeInsets.symmetric(vertical: 8),
-                            child: ListTile(
-                              title: Text(
-                                listTugas[index]['tugas'],
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Colors
-                                          .purple, 
-                                ),
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: listTugas.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          child: ListTile(
+                            title: Text(
+                              listTugas[index]['tugas'],
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.purple,
                               ),
-                              onTap: () {
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailDataPiketPage(
+                                    tugas: listTugas[index]['tugas'],
+                                    anggota: listTugas[index]['anggota'],
+                                    tanggal: listTugas[index]['tanggal'],
+                                  ),
+                                ),
+                              );
+                            },
+                            trailing: IconButton(
+                              icon: const Icon(
+                                Icons.arrow_forward,
+                                color: Colors.purple,
+                              ),
+                              onPressed: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder:
-                                        (context) => DetailDataPiketPage(
-                                          tugas: listTugas[index]['tugas'],
-                                          anggota: listTugas[index]['anggota'],
-                                          tanggal: listTugas[index]['tanggal'],
-                                        ),
+                                    builder: (context) => DetailDataPiketPage(
+                                      tugas: listTugas[index]['tugas'],
+                                      anggota: listTugas[index]['anggota'],
+                                      tanggal: listTugas[index]['tanggal'],
+                                    ),
                                   ),
                                 );
                               },
-                              trailing: IconButton(
-                                icon: const Icon(
-                                  Icons
-                                      .arrow_forward, 
-                                  color:
-                                      Colors
-                                          .purple, 
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder:
-                                          (context) => DetailDataPiketPage(
-                                            tugas: listTugas[index]['tugas'],
-                                            anggota:
-                                                listTugas[index]['anggota'],
-                                            tanggal:
-                                                listTugas[index]['tanggal'],
-                                          ),
-                                    ),
-                                  );
-                                },
-                              ),
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
+                    ),
             ),
           ],
         ),

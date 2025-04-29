@@ -16,11 +16,11 @@ class _DataPiketPageState extends State<DataPiketPage> {
   final _key = GlobalKey<FormState>();
   final TextEditingController _tugasController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   List<Map<String, dynamic>> listTugas = [];
   String? _selectedAnggota;
   String? _dateError;
-  List<String> _anggotaOptions = [];
   bool _isLocaleInitialized = false;
 
   @override
@@ -38,8 +38,8 @@ class _DataPiketPageState extends State<DataPiketPage> {
     final prefs = await SharedPreferences.getInstance();
     final email = prefs.getString('userEmail') ?? 'Admin';
     setState(() {
-      _anggotaOptions = [email];
       _selectedAnggota = email;
+      _emailController.text = email;  // Set the email to the controller
     });
   }
 
@@ -47,6 +47,7 @@ class _DataPiketPageState extends State<DataPiketPage> {
   void dispose() {
     _tugasController.dispose();
     _dateController.dispose();
+    _emailController.dispose();  // Dispose of the controller
     super.dispose();
   }
 
@@ -132,36 +133,19 @@ class _DataPiketPageState extends State<DataPiketPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(DateTime.now()),
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.black87,
-              ),
-            ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 5),
             Text(
               'Nama Anggota',
               style: GoogleFonts.poppins(
-                fontSize: 16,
+                fontSize: 13,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 8),
-            DropdownButtonFormField<String>(
-              value: _selectedAnggota,
-              items: _anggotaOptions.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  _selectedAnggota = newValue;
-                });
-              },
+            // TextFormField to display the email
+            TextFormField(
+              controller: _emailController,  // Using the controller to manage email
+              readOnly: true,  // Make it read-only to avoid editing
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -174,7 +158,7 @@ class _DataPiketPageState extends State<DataPiketPage> {
             Text(
               'Pilih Tanggal',
               style: GoogleFonts.poppins(
-                fontSize: 16,
+                fontSize: 13,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -219,7 +203,7 @@ class _DataPiketPageState extends State<DataPiketPage> {
             Text(
               'Tugas Piket',
               style: GoogleFonts.poppins(
-                fontSize: 16,
+                fontSize: 13,
                 fontWeight: FontWeight.bold,
               ),
             ),
